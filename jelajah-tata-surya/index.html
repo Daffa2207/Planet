@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Jelajah Tata Surya — Planet-planet di Galaksi Bima Sakti</title>
+  <meta name="description" content="Website interaktif tentang delapan planet Tata Surya: putar planet dengan jari atau mouse, baca penjelasan lengkap, bandingkan ukuran, dan telusuri misi antariksa.">
+  <meta name="theme-color" content="#060814">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <!-- Font opsional dari Google Fonts. Kalau offline, browser otomatis memakai font sistem. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <a class="skip" href="#jelajah">Lewati ke penjelajah planet</a>
+
+  <header class="topbar" id="topbar">
+    <a class="brand" href="#beranda" aria-label="Jelajah Tata Surya, ke beranda">
+      <span class="brand-orb" aria-hidden="true"></span>
+      <span>Jelajah Tata Surya</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="nav" aria-label="Buka menu">
+      <span></span><span></span>
+    </button>
+    <nav class="nav" id="nav" aria-label="Navigasi utama">
+      <a href="#galaksi">Bima Sakti</a>
+      <a href="#peta">Peta orbit</a>
+      <a href="#jelajah">Planet</a>
+      <a href="#banding">Bandingkan</a>
+      <a href="#lainnya">Selain planet</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ================================================= BERANDA -->
+    <section class="hero" id="beranda">
+      <div class="hero-planet" id="heroPlanet">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-placeholder" aria-hidden="true"></div>
+        <canvas id="heroCanvas" aria-label="Planet yang berputar. Ketuk untuk berganti planet." role="img" tabindex="0"></canvas>
+        <p class="hero-caption" id="heroCaption" aria-live="polite">Bumi. Ketuk untuk ganti planet.</p>
+      </div>
+      <div class="hero-copy">
+        <h1>Delapan planet, satu bintang, dan rumah kita di Bima Sakti</h1>
+        <p class="lead">Putar setiap planet dengan jarimu, sentuh untuk memicu efek, lalu baca penjelasan lengkapnya: ukuran, atmosfer, bulan, sampai misi antariksa yang pernah mengunjunginya.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#jelajah">Mulai menjelajah</a>
+          <a class="btn btn-ghost" href="#peta">Lihat peta orbit</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================= BIMA SAKTI -->
+    <section class="section galaxy" id="galaksi" aria-labelledby="galaksiJudul">
+      <div class="galaxy-canvas-wrap">
+        <canvas id="galaxy" role="img" aria-label="Ilustrasi galaksi Bima Sakti dari atas. Penanda menunjukkan posisi Tata Surya di Lengan Orion."></canvas>
+      </div>
+      <div class="galaxy-copy">
+        <h2 id="galaksiJudul">Kita tinggal di pinggiran galaksi spiral</h2>
+        <p class="lead">Tata Surya berada di Lengan Orion, sekitar 26.000 tahun cahaya dari pusat Bima Sakti. Kedelapan planet di halaman ini mengorbit satu bintang di sana: Matahari.</p>
+        <dl class="readout readout-tight">
+          <div><dt>Lebar galaksi</dt><dd>±100.000 tahun cahaya</dd></div>
+          <div><dt>Jumlah bintang</dt><dd>100–400 miliar</dd></div>
+          <div><dt>Kecepatan Tata Surya</dt><dd>±220 km/detik</dd></div>
+          <div><dt>Satu putaran penuh</dt><dd>±230 juta tahun</dd></div>
+          <div><dt>Pusat galaksi</dt><dd>Lubang hitam Sagittarius A*</dd></div>
+          <div><dt>Tetangga terdekat</dt><dd>Galaksi Andromeda</dd></div>
+        </dl>
+        <p class="note">Planet-planet di halaman ini berada di Tata Surya, yang menjadi bagian kecil dari Bima Sakti. Di seluruh galaksi, lebih dari 6.000 planet di bintang lain (eksoplanet) sudah dikonfirmasi, dan jumlah sebenarnya diperkirakan ratusan miliar.</p>
+      </div>
+    </section>
+
+    <!-- ================================================= PETA ORBIT -->
+    <section class="section" id="peta" aria-labelledby="petaJudul">
+      <div class="section-head">
+        <h2 id="petaJudul">Peta orbit Tata Surya</h2>
+        <p class="lead">Sentuh sebuah planet untuk menahannya, ketuk untuk membuka penjelasannya. Ukuran dan jarak sengaja tidak sesuai skala supaya kedelapan planet muat di layar.</p>
+      </div>
+      <div class="orrery-layout">
+        <div class="orrery-frame">
+          <div class="orrery" id="orrery" aria-label="Peta orbit interaktif. Setiap planet adalah tombol."></div>
+        </div>
+        <div class="orrery-side">
+          <div class="orrery-readout" id="orreryReadout" aria-live="polite">
+            <p class="orrery-readout-title">Sentuh sebuah planet</p>
+            <p class="orrery-readout-text">Kecepatan orbit di peta dipercepat. Merkurius menempuh satu putaran dalam hitungan detik, sedangkan di dunia nyata butuh 88 hari.</p>
+          </div>
+          <div class="controls">
+            <button class="btn btn-ghost" id="orreryPlay" aria-pressed="false">Jeda orbit</button>
+            <label class="range">
+              <span>Kecepatan</span>
+              <input type="range" id="orrerySpeed" min="0.25" max="4" step="0.25" value="1" aria-label="Kecepatan orbit">
+            </label>
+            <button class="switch" id="orreryLabels" role="switch" aria-checked="true"><span class="switch-track"><span class="switch-thumb"></span></span>Tampilkan nama</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================= JELAJAHI PLANET -->
+    <section class="section explorer" id="jelajah" aria-labelledby="jelajahJudul">
+      <div class="section-head">
+        <h2 id="jelajahJudul">Jelajahi setiap planet</h2>
+        <p class="lead">Seret planet untuk memutarnya ke arah mana pun. Ketuk untuk memicu efek dan membaca fakta cepat. Gunakan tombol panah kiri dan kanan di keyboard untuk berpindah planet.</p>
+      </div>
+
+      <div class="picker" id="picker" role="tablist" aria-label="Pilih planet"></div>
+
+      <div class="explorer-grid">
+        <div class="stage-col">
+          <div class="stage" id="stage" tabindex="0" aria-label="Panggung planet. Seret untuk memutar, ketuk untuk efek.">
+            <div class="stage-glow" aria-hidden="true"></div>
+            <div class="planet-parallax" id="parallax">
+              <div class="planet-tilt" id="tilt">
+                <canvas id="planetCanvas" role="img" aria-label="Model planet yang bisa diputar"></canvas>
+              </div>
+            </div>
+            <div class="fx-layer" id="fxLayer" aria-hidden="true"></div>
+            <div class="stage-loading" id="stageLoading" aria-hidden="true"><span class="spinner"></span></div>
+            <p class="fact-bubble" id="factBubble" role="status"></p>
+            <p class="stage-hint" id="stageHint">Seret untuk memutar. Ketuk untuk efek.</p>
+          </div>
+
+          <div class="stage-controls">
+            <button class="icon-btn" id="prevBtn" aria-label="Planet sebelumnya">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="switch" id="autoBtn" role="switch" aria-checked="true"><span class="switch-track"><span class="switch-thumb"></span></span>Putar otomatis</button>
+            <div class="segment" id="speedSeg" role="group" aria-label="Kecepatan putar">
+              <button data-speed="0.4" aria-pressed="false">Pelan</button>
+              <button data-speed="1" aria-pressed="true">Normal</button>
+              <button data-speed="2.5" aria-pressed="false">Cepat</button>
+            </div>
+            <button class="icon-btn" id="nextBtn" aria-label="Planet berikutnya">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <article class="info" id="info" aria-live="polite">
+          <header class="info-head">
+            <p class="info-order" id="infoOrder"></p>
+            <h3 id="infoName"></h3>
+            <p class="info-latin" id="infoLatin"></p>
+            <p class="info-tagline" id="infoTagline"></p>
+          </header>
+
+          <dl class="readout" id="stats"></dl>
+
+          <div class="tabs" id="tabs" role="tablist" aria-label="Bagian penjelasan planet">
+            <button role="tab" id="tab-ringkasan" aria-controls="panel-ringkasan" aria-selected="true">Ringkasan</button>
+            <button role="tab" id="tab-struktur" aria-controls="panel-struktur" aria-selected="false" tabindex="-1">Struktur dan atmosfer</button>
+            <button role="tab" id="tab-bulan" aria-controls="panel-bulan" aria-selected="false" tabindex="-1">Bulan</button>
+            <button role="tab" id="tab-misi" aria-controls="panel-misi" aria-selected="false" tabindex="-1">Misi</button>
+            <button role="tab" id="tab-fakta" aria-controls="panel-fakta" aria-selected="false" tabindex="-1">Fakta</button>
+            <button role="tab" id="tab-coba" aria-controls="panel-coba" aria-selected="false" tabindex="-1">Coba sendiri</button>
+          </div>
+          <div class="panels" id="panels">
+            <div role="tabpanel" id="panel-ringkasan" aria-labelledby="tab-ringkasan" class="panel"></div>
+            <div role="tabpanel" id="panel-struktur" aria-labelledby="tab-struktur" class="panel" hidden></div>
+            <div role="tabpanel" id="panel-bulan" aria-labelledby="tab-bulan" class="panel" hidden></div>
+            <div role="tabpanel" id="panel-misi" aria-labelledby="tab-misi" class="panel" hidden></div>
+            <div role="tabpanel" id="panel-fakta" aria-labelledby="tab-fakta" class="panel" hidden></div>
+            <div role="tabpanel" id="panel-coba" aria-labelledby="tab-coba" class="panel" hidden></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================================================= BANDINGKAN -->
+    <section class="section" id="banding" aria-labelledby="bandingJudul">
+      <div class="section-head">
+        <h2 id="bandingJudul">Bandingkan kedelapan planet</h2>
+        <p class="lead">Pilih satu ukuran untuk melihat seberapa berbeda planet-planet ini. Ketuk sebuah planet untuk membuka penjelasannya.</p>
+      </div>
+      <div class="compare-controls">
+        <div class="segment segment-wrap" id="metricSeg" role="group" aria-label="Pilih ukuran yang dibandingkan"></div>
+        <div class="segment" id="scaleSeg" role="group" aria-label="Skala batang">
+          <button data-scale="linear" aria-pressed="true">Linear</button>
+          <button data-scale="log" aria-pressed="false">Logaritmik</button>
+        </div>
+      </div>
+      <div class="bars" id="bars"></div>
+
+      <h3 class="subhead">Perbandingan ukuran</h3>
+      <p class="note">Diameter planet dalam skala yang sama. Pada skala ini Matahari selebar hampir sepuluh kali Jupiter, jadi tidak muat di layar.</p>
+      <div class="sizes-scroll">
+        <div class="sizes" id="sizes"></div>
+      </div>
+    </section>
+
+    <!-- ================================================= SELAIN PLANET -->
+    <section class="section" id="lainnya" aria-labelledby="lainnyaJudul">
+      <div class="section-head">
+        <h2 id="lainnyaJudul">Selain delapan planet</h2>
+        <p class="lead">Tata Surya juga berisi bintang, batuan, es, dan komet. Ketuk kartu untuk membaliknya.</p>
+      </div>
+      <div class="flip-grid" id="flipGrid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Data dibulatkan dari NASA, ESA, dan IAU, dan dapat berubah seiring penemuan baru. Seluruh gambar planet dibuat oleh kode, tanpa foto atau library eksternal.</p>
+    <p><a href="#beranda">Kembali ke atas</a></p>
+  </footer>
+
+  <noscript><p class="noscript">Halaman ini membutuhkan JavaScript untuk menampilkan planet interaktif. Aktifkan JavaScript di browser Anda.</p></noscript>
+
+  <script src="js/data.js"></script>
+  <script src="js/planet-core.js"></script>
+  <script src="js/planet-view.js"></script>
+  <script src="js/starfield.js"></script>
+  <script src="js/galaxy.js"></script>
+  <script src="js/orrery.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
